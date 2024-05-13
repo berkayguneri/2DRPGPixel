@@ -1,0 +1,53 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerState
+{
+    protected PlayerStateMachine stateMachine;
+    protected Player player;
+
+    protected Rigidbody2D rb;
+
+    protected float xInput;
+    protected float yInput;
+    private string animBoolName;
+
+    protected float stateTimer;
+    protected bool triggerCalled;
+    public PlayerState(Player _player,PlayerStateMachine _stateMachine, string _animBoolName)
+    {
+        this.stateMachine = _stateMachine;
+        this.player = _player;
+        this.animBoolName = _animBoolName;
+    }
+
+    public virtual void Enter()
+    {
+        //Debug.Log("I enter " + animBoolName);
+
+        player.anim.SetBool(animBoolName, true);
+        rb = player.rb;
+        triggerCalled = false;
+    }
+
+    public virtual void Update()
+    {
+        stateTimer-=Time.deltaTime;
+        //Debug.Log("I m in " + animBoolName);
+        xInput = Input.GetAxisRaw("Horizontal");
+        yInput = Input.GetAxisRaw("Vertical");
+        player.anim.SetFloat("yVelocity", rb.velocity.y);
+    }
+
+    public virtual void Exit()
+    {
+        //Debug.Log("I  exit " + animBoolName);
+        player.anim.SetBool(animBoolName, false);
+    }
+
+    public virtual void AnimationFinishTrigger()
+    {
+        triggerCalled = true;
+    }
+}
