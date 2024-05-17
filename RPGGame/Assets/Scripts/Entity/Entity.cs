@@ -7,6 +7,7 @@ public class Entity : MonoBehaviour
 
     #region Components
     public Animator anim { get; private set; }
+    public SpriteRenderer spriteRenderer { get; private set; }
     public Rigidbody2D rb { get; private set; }
     public EntityFX fX { get; private set; }
     public CharacterStats stats { get; private set; }
@@ -39,7 +40,10 @@ public class Entity : MonoBehaviour
 
     protected virtual void Start()
     {
+
         anim = GetComponentInChildren<Animator>();
+
+        spriteRenderer=GetComponentInChildren<SpriteRenderer>();
 
         rb = GetComponent<Rigidbody2D>();
 
@@ -55,8 +59,17 @@ public class Entity : MonoBehaviour
 
     }
 
-    public virtual void DamageImpact()=> StartCoroutine("HitKnockback");
+    public virtual void SlowEntityBy(float _slowPercantage,float _slowDuration)
+    {
 
+    }
+
+    protected virtual void ReturnDefaultSpeed()
+    {
+        anim.speed = 1;
+    }
+
+    public virtual void DamageImpact() => StartCoroutine("HitKnockback");
 
     protected IEnumerator HitKnockback()
     {
@@ -123,6 +136,12 @@ public class Entity : MonoBehaviour
 
     
     #endregion
+
+    public void MakeTransparent(bool _transparent)
+    {
+        if (_transparent)
+            _transparent = spriteRenderer;
+    }
 
     public virtual void Die()
     {

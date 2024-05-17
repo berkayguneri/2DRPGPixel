@@ -6,6 +6,8 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory instance;
 
+    public List<ItemData> startingItems;
+
     public List<InventoryItem> equipment;
     public Dictionary<ItemData_Equippment, InventoryItem> equipmentDictionary;
 
@@ -34,18 +36,27 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        inventory =new List<InventoryItem>();
+        inventory = new List<InventoryItem>();
         stash = new List<InventoryItem>();
-        equipment=new List<InventoryItem>();
+        equipment = new List<InventoryItem>();
 
         inventoryDictionary = new Dictionary<ItemData, InventoryItem>();
-        stashDictionary= new Dictionary<ItemData, InventoryItem>();
-        equipmentDictionary=new Dictionary<ItemData_Equippment, InventoryItem>();
+        stashDictionary = new Dictionary<ItemData, InventoryItem>();
+        equipmentDictionary = new Dictionary<ItemData_Equippment, InventoryItem>();
 
 
-        inventoryItemSlot=inventorySlotParent.GetComponentsInChildren<UIItemSlot>();
-        stashItemSlot=stashSlotParent.GetComponentsInChildren<UIItemSlot>();
+        inventoryItemSlot = inventorySlotParent.GetComponentsInChildren<UIItemSlot>();
+        stashItemSlot = stashSlotParent.GetComponentsInChildren<UIItemSlot>();
         equipmentSlot = equipmentSlotParent.GetComponentsInChildren<UIEquipmentSlot>();
+        AddStartingItems();
+    }
+
+    private void AddStartingItems()
+    {
+        for (int i = 0; i < startingItems.Count; i++)
+        {
+            AddItem(startingItems[i]);
+        }
     }
 
     public void EquipItem(ItemData _item)
@@ -70,15 +81,19 @@ public class Inventory : MonoBehaviour
 
         equipment.Add(newItem);
         equipmentDictionary.Add(newEquipment, newItem);
+        newEquipment.AddModifiers();
         RemoveItem(_item);
+
+        UpdateSlotUI();
     }
 
-    private void UnequipedItem(ItemData_Equippment itemToRemove)
+    public void UnequipedItem(ItemData_Equippment itemToRemove)
     {
         if (equipmentDictionary.TryGetValue(itemToRemove, out InventoryItem value))
         {
             equipment.Remove(value);
             equipmentDictionary.Remove(itemToRemove);
+            itemToRemove.RemoveModifiers();
         }
     }
 
@@ -181,5 +196,43 @@ public class Inventory : MonoBehaviour
         UpdateSlotUI();
     }
 
+    public bool CanCraft(ItemData_Equippment _itemToCraft, List<InventoryItem> _requiredMaterials)
+    {
+        List<InventoryItem> materialsToRemove= new List<InventoryItem>();
+
+        for (int i = 0; i < _requiredMaterials.Count; i++)
+        {
+            if (stashDictionary.TryGetValue(_requiredMaterials[i].data, out InventoryItem stashValue)) 
+            {
+                if (stashValue.stackSize < _requiredMaterials[i].stackSize)
+                {
+                    Debug.Log("not enough materials");
+                    return false;
+                }
+                else
+                {
+                    materialsToRemove.Add(stashValue);
+                }
+            }
+            else
+            {
+                Debug.Log("not enough materials");
+                return false;
+            }
+        }
+
+        for (int i = 0; i < materialsToRemove.Count; i++)
+        {
+            RemoveItem(materialsToRemove[i].data);
+        }
+
+        AddItem(_itemToCraft);
+        Debug.Log("Here is your item " + _itemToCraft.name);
+        return true;
+    }
+
+    public List<InventoryItem> GetEquipmentList() => equipment;
+
+    public List<InventoryItem> GetStashList() => stash;
     
 }

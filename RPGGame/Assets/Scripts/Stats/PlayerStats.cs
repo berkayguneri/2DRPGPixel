@@ -13,12 +13,15 @@ public class PlayerStats : CharacterStats
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
-        
+        //player.DamageImpact();
     }
 
     protected override void Die()
     {
         base.Die();
         player.Die();
+
+        GetComponent<PlayerItemDrop>()?.GenerateDrop();
+        Debug.Log("character is dead");
     }
 }

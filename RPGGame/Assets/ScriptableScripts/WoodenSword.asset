@@ -15,4 +15,17 @@ MonoBehaviour:
   itemType: 1
   itemName: WoodenSword
   icon: {fileID: 1025091068, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  dropChance: 64
   equipmentType: 0
+  strength: 0
+  agility: 0
+  intelligence: 0
+  vitality: 0
+  damage: 4
+  critiChance: 0
+  critPower: 0
+  health: 0
+  armor: 0
+  evasion: 3
+  magicResistance: 0
+  craftingMaterials: []

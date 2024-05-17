@@ -11,9 +11,9 @@ public class CharacterStats : MonoBehaviour
 
     [Header("Major Stats")]
     public Stats strength;
-    public Stats agility;
-    public Stats intelligence;
-    public Stats vitality;
+    public Stats agility; //ceviklik
+    public Stats intelligence; // zeki
+    public Stats vitality; // canlýlýk
 
     [Header("Offensive Stats")]
     public Stats damage;
@@ -38,24 +38,30 @@ public class CharacterStats : MonoBehaviour
     public bool isShocked; // reduce accuracy by 20%
 
 
-    private float ignitedTimer;
-    private float chilledTimer;
-    private float shockedTimer;
 
-    
+    [SerializeField] private float ailmentsDuration = 4;
+    private float ignitedTimer; //zaman içinde hasar verir
+    private float chilledTimer; // zýrhý %20 azaltýr
+    private float shockedTimer; // doðruluðu %20 azaltýr
+
+
 
     private float igniteDamageCooldown = .3f;
     private float igniteDamageTimer;
     private int igniteDamage;
+    [SerializeField] private GameObject shockStrikePrefab;
+    private int shockDamage;
 
     public int currentHealth;
     public System.Action onHealthChanged;
-    protected bool isDead;
+    public bool isDead { get; private set; }
 
     protected virtual void Start()
     {
         critPower.SetDefaultValue(150);
         currentHealth = GetMaxHealthValue();
+
+
         fX=GetComponent<EntityFX>();
 
         Debug.Log("character stats called");
@@ -71,17 +77,16 @@ public class CharacterStats : MonoBehaviour
         igniteDamageTimer -= Time.deltaTime;
 
 
-
         if (ignitedTimer < 0)
             isIgnited = false;
-
+        
         if (chilledTimer < 0)
             isChilled = false;
 
         if (shockedTimer < 0)
             isShocked = false;
 
-        if(isIgnited)
+        if (isIgnited)
             ApplyIgniteDamage();
 
     }
@@ -158,34 +163,97 @@ public class CharacterStats : MonoBehaviour
 
         if (canApplyIgnite)
             _targetStats.SetupIgniteDamage(Mathf.RoundToInt(_fireDamage * .2f));
+        if (canApplyShock)
+            _targetStats.SetUpShockStrikeDamage(Mathf.RoundToInt(_lightingDamage * .1f));
 
         _targetStats.ApplyAilmnets(canApplyIgnite, canApplyChill, canApplyShock);
     }
 
-
     public void ApplyAilmnets(bool _ignite, bool _chill, bool _shocked)
     {
-        if (isIgnited || isChilled || isShocked)
-            return;
+        bool canApplyIgnite = !isIgnited && !isChilled && !isShocked;
+        bool canApplyChill = !isIgnited && !isChilled && !isShocked;
+        bool canApplyShock = !isIgnited && !isChilled;
 
-        if (_ignite)
+        if (_ignite && canApplyIgnite)
         {
             isIgnited = _ignite;
-            ignitedTimer = 2;
+            ignitedTimer = ailmentsDuration;
+
+            fX.IgniteFXFor(ailmentsDuration);
         }
 
-        if (_chill)
+        if (_chill && canApplyChill)
         {
             isChilled=_chill;
-            chilledTimer = 2;
+            chilledTimer = ailmentsDuration;
+
+            float slowPercantge = .2f;
+
+            GetComponent<Entity>().SlowEntityBy(slowPercantge, ailmentsDuration);
+            fX.ChillFXFor(ailmentsDuration);
         }
 
-        if (_shocked)
+        if (_shocked && canApplyShock)
         {
-            isShocked = _shocked;
-            shockedTimer = 2;
+            if (!isShocked)
+            {
+                ApplyShock(_shocked);
+            }
+            else
+            {
+                if (GetComponent<Player>() != null)
+                    return;
+
+                HitNearestTargetWithShockStrike();
+            }
         }
 
+    }
+
+    public void ApplyShock(bool _shocked)
+    {
+        if (isShocked)
+            return;
+
+        isShocked = _shocked;
+        shockedTimer = ailmentsDuration;
+
+        fX.ShockFXFor(ailmentsDuration);
+    }
+
+    private void HitNearestTargetWithShockStrike()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 25);
+
+        float closestDistance = Mathf.Infinity;
+        Transform closestEnemy = null;
+
+        foreach (var hit in colliders)
+        {
+            if (hit.GetComponent<Enemy>() != null && Vector2.Distance(transform.position, hit.transform.position) > 1)
+            {
+                float distanceToEnemy = Vector2.Distance(transform.position, hit.transform.position);
+
+                if (distanceToEnemy < closestDistance)
+                {
+                    closestDistance = distanceToEnemy;
+                    closestEnemy = hit.transform;
+                }
+            }
+
+            if (closestEnemy != null)
+            {
+                closestEnemy = transform;
+            }
+        }
+
+
+        if (closestEnemy != null)
+        {
+            GameObject newShockStrike = Instantiate(shockStrikePrefab, transform.position, Quaternion.identity);
+            newShockStrike.GetComponent<ShockStrikeController>().SetUp(shockDamage, closestEnemy.GetComponent<CharacterStats>());
+        }
     }
 
     private void ApplyIgniteDamage()
@@ -205,8 +273,8 @@ public class CharacterStats : MonoBehaviour
             igniteDamageTimer = igniteDamageCooldown;
         }
     }
-    public void SetupIgniteDamage(int _damage) =>igniteDamage=_damage;
-
+    public void SetupIgniteDamage(int _damage) => igniteDamage = _damage;
+    public void SetUpShockStrikeDamage(int _damage) => shockDamage = _damage;
     #endregion
     public virtual void TakeDamage(int _damage)
     {
@@ -243,9 +311,10 @@ public class CharacterStats : MonoBehaviour
         }
         else
         {
-            totalDamage-=_targetStats.armor.GetValue();
+            totalDamage -= _targetStats.armor.GetValue();
         }
-        totalDamage -= _targetStats.armor.GetValue();
+
+        //totalDamage -= _targetStats.armor.GetValue();
         totalDamage = Mathf.Clamp(totalDamage, 0, int.MaxValue);
         return totalDamage;
     }
@@ -282,7 +351,7 @@ public class CharacterStats : MonoBehaviour
 
     private int CalculateCriticalDamage(int _damage)
     {
-        float totalCritPower=(critPower.GetValue() +strength.GetValue()) * .01f;
+        float totalCritPower=(critPower.GetValue() + strength.GetValue()) * .01f;
         Debug.Log("total crit power %" + totalCritPower);
 
         float critDamage=_damage * totalCritPower;
