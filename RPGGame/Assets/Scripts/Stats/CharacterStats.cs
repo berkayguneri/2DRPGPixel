@@ -248,7 +248,6 @@ public class CharacterStats : MonoBehaviour
             }
         }
 
-
         if (closestEnemy != null)
         {
             GameObject newShockStrike = Instantiate(shockStrikePrefab, transform.position, Quaternion.identity);

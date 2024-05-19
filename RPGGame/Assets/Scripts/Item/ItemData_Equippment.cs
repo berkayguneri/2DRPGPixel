@@ -13,6 +13,7 @@ public enum EquipmentType
 public class ItemData_Equippment : ItemData
 {
     public EquipmentType equipmentType;
+    public ItemEffect[] itemEffect;
 
     [Header("Major Stats")]
     public int strength;
@@ -31,9 +32,21 @@ public class ItemData_Equippment : ItemData
     public int evasion;
     public int magicResistance;
 
+    [Header("Magic Stats")]
+    public int fireDamage;
+    public int iceDamage;
+    public int lightingDamage;
+
     [Header("Craft requirements")]
     public List<InventoryItem> craftingMaterials;
 
+    public void Effect(Transform _enemyPosition)
+    {
+        foreach (var item in itemEffect)
+        {
+            item.ExecuteEffect(_enemyPosition);
+        }
+    }
 
     public void AddModifiers()
     {
@@ -53,6 +66,10 @@ public class ItemData_Equippment : ItemData
         playerStats.armor.AddModifier(armor);
         playerStats.evasion.AddModifier(evasion);
         playerStats.magicResistance.AddModifier(magicResistance);
+
+        playerStats.fireDamage.AddModifier(fireDamage);
+        playerStats.iceDamage.AddModifier(iceDamage);
+        playerStats.lightingDamage.AddModifier(lightingDamage);
 
 
     }
@@ -74,5 +91,11 @@ public class ItemData_Equippment : ItemData
         playerStats.armor.RemoveModifier(armor);
         playerStats.evasion.RemoveModifier(evasion);
         playerStats.magicResistance.RemoveModifier(magicResistance);
+
+        playerStats.fireDamage.RemoveModifier(fireDamage);
+        playerStats.iceDamage.RemoveModifier(iceDamage);
+        playerStats.lightingDamage.RemoveModifier(lightingDamage);
+
     }   
+
 }
