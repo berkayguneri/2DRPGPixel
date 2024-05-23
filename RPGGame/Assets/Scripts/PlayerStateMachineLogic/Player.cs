@@ -90,6 +90,9 @@ public class Player : Entity
 
         if (Input.GetKeyDown(KeyCode.F))
             skill.shurikenSkill.CanUseSkill();
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            Inventory.instance.UseFlask();
     }
 
 

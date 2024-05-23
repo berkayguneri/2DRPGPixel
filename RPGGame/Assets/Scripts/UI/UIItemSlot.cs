@@ -5,13 +5,19 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class UIItemSlot : MonoBehaviour, IPointerDownHandler
+public class UIItemSlot : MonoBehaviour, IPointerDownHandler,IPointerEnterHandler,IPointerExitHandler
 {
-    [SerializeField] private Image itemImage;
-    [SerializeField] private TextMeshProUGUI itemText;
+    [SerializeField] protected Image itemImage;
+    [SerializeField] protected TextMeshProUGUI itemText;
 
+    protected UI ui;
     public InventoryItem item;
 
+
+    protected virtual void Start()
+    {
+        ui=GetComponentInParent<UI>();
+    }
 
     public void UpdateSlot(InventoryItem _newItem)
     {
@@ -20,7 +26,7 @@ public class UIItemSlot : MonoBehaviour, IPointerDownHandler
         itemImage.color = Color.white;
         if (item != null)
         {
-            itemImage.sprite = item.data.icon;
+            itemImage.sprite = item.data.itemIcon;
 
             if (item.stackSize > 1)
             {
@@ -45,6 +51,9 @@ public class UIItemSlot : MonoBehaviour, IPointerDownHandler
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
+        if (item == null)
+            return;
+
         if (Input.GetKey(KeyCode.LeftControl))
         {
             Inventory.instance.RemoveItem(item.data);
@@ -57,6 +66,24 @@ public class UIItemSlot : MonoBehaviour, IPointerDownHandler
             //Debug.Log("Equipped new item" + item.data.itemName);
         }
 
+        ui.itemToolTip.HideToolTip();
+
 
     }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if(item == null) return;
+
+        ui.itemToolTip.ShowToolTip(item.data as ItemData_Equippment);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (item == null) return;
+
+        ui.itemToolTip.HideToolTip();
+    }
+
+   
 }

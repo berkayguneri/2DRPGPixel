@@ -10,26 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f7bf6f76bbd5514a8938a4381e21851, type: 3}
-  m_Name: StolenSword
+  m_Name: Fire Flask
   m_EditorClassIdentifier: 
   itemType: 1
-  itemName: StolenSword
-  icon: {fileID: 1526008332, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 30
-  equipmentType: 0
+  itemName: Fire flask
+  itemIcon: {fileID: 1923829048, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  dropChance: 0
+  equipmentType: 3
+  itemCooldown: 0
+  itemEffect:
+  - {fileID: 11400000, guid: f22d02b9cf395f74eadd94062e3443f8, type: 2}
   strength: 0
-  agility: 5
+  agility: 0
   intelligence: 0
   vitality: 0
-  damage: 12
-  critiChance: 7
+  damage: 0
+  critiChance: 0
   critPower: 0
   health: 0
   armor: 0
   evasion: 0
   magicResistance: 0
-  craftingMaterials:
-  - data: {fileID: 11400000, guid: a347daf0984aefd4d8dbf7235ebf0834, type: 2}
-    stackSize: 1
-  - data: {fileID: 11400000, guid: d6725c61a0834f248bc78844db695e49, type: 2}
-    stackSize: 1
+  fireDamage: 0
+  iceDamage: 0
+  lightingDamage: 0
+  craftingMaterials: []

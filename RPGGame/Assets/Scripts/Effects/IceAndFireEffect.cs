@@ -20,7 +20,7 @@ public class IceAndFireEffect : ItemEffect
 
             newIceAndFire.GetComponent<Rigidbody2D>().velocity = new Vector2(xVelocity * player.facingDirection, 0);
 
-            Destroy(newIceAndFire, 10);
+            Destroy(newIceAndFire, 10); 
         }
 
         

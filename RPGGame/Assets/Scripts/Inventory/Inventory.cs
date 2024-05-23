@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -22,10 +23,20 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Transform inventorySlotParent;
     [SerializeField] private Transform stashSlotParent;
     [SerializeField] private Transform equipmentSlotParent;
+    [SerializeField] private Transform statsSlotParent;
 
     private UIItemSlot[] inventoryItemSlot;
     private UIItemSlot[] stashItemSlot;
     private UIEquipmentSlot[] equipmentSlot;
+    private UIStatSlot[] statSlot;
+
+    [Header("Items Cooldown")]
+    [SerializeField] private float lastTimeUsedFlask;
+    [SerializeField] private float lastTimeUsedArmor;
+
+    private float flaskCooldown;
+    private float armorCooldown;
+
     private void Awake()
     {
         if (instance == null)
@@ -48,6 +59,8 @@ public class Inventory : MonoBehaviour
         inventoryItemSlot = inventorySlotParent.GetComponentsInChildren<UIItemSlot>();
         stashItemSlot = stashSlotParent.GetComponentsInChildren<UIItemSlot>();
         equipmentSlot = equipmentSlotParent.GetComponentsInChildren<UIEquipmentSlot>();
+        statSlot=statsSlotParent.GetComponentsInChildren<UIStatSlot>();
+        
         AddStartingItems();
     }
 
@@ -55,7 +68,9 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < startingItems.Count; i++)
         {
-            AddItem(startingItems[i]);
+            if (startingItems[i] != null)
+                AddItem(startingItems[i]);
+
         }
     }
 
@@ -128,12 +143,15 @@ public class Inventory : MonoBehaviour
         {
             stashItemSlot[i].UpdateSlot(stash[i]);
         }
+        for(int i = 0;i < statSlot.Length; i++) 
+        {
+            statSlot[i].UpdateStatValueUI();
+        }
     }
 
     public void AddItem(ItemData _item)
     {
-        //inventory.Add(_item);
-        if (_item.itemType == ItemType.Equipment)
+        if (_item.itemType == ItemType.Equipment && CanAddItem())
             AddToInventory(_item);
 
         else if(_item.itemType == ItemType.Material)
@@ -196,6 +214,15 @@ public class Inventory : MonoBehaviour
         UpdateSlotUI();
     }
 
+    public bool CanAddItem()
+    {
+        if (inventory.Count >= inventoryItemSlot.Length)
+        {
+            return false;
+        }
+        return true;
+    }
+
     public bool CanCraft(ItemData_Equippment _itemToCraft, List<InventoryItem> _requiredMaterials)
     {
         List<InventoryItem> materialsToRemove= new List<InventoryItem>();
@@ -248,5 +275,43 @@ public class Inventory : MonoBehaviour
         }
         return equipedItem;
     }
+    
+    public void UseFlask()
+    {
+        ItemData_Equippment currentFlask= GetEquipment(EquipmentType.Flask);
+
+        if (currentFlask == null)
+            return;
+        
+
+        bool canUseFlask = Time.time > lastTimeUsedFlask + flaskCooldown;
+
+        if (canUseFlask)
+        {
+            flaskCooldown = currentFlask.itemCooldown;
+
+            currentFlask.Effect(null);
+            lastTimeUsedFlask = Time.time;
+        }
+        else
+        {
+            Debug.Log("flask is cooldown");
+        }
+    }
+
+    public bool CanUseArmor()
+    {
+        ItemData_Equippment currentArmor=GetEquipment(EquipmentType.Armor);
+
+        if (Time.time > lastTimeUsedArmor + armorCooldown)
+        {
+            armorCooldown = currentArmor.itemCooldown;
+            lastTimeUsedArmor = Time.time;
+            return true;
+        }
+        Debug.Log("armor on cooldown");
+        return false;
+    }
+
     
 }
