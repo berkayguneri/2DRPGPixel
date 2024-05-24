@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShurikenSkill : Skill
 {
@@ -9,22 +10,72 @@ public class ShurikenSkill : Skill
     private GameObject currentShuriken;
 
     [Header("Shuriken Mirage")]
-    [SerializeField] private bool cloneInsteadOfShuriken; 
+    [SerializeField] private UISkillTreeSlots unlockCloneInsteadButton;
+    [SerializeField] private bool cloneInsteadOfShuriken;
 
+    [Header("Shuriken simple")]
+    [SerializeField] private UISkillTreeSlots unlockShurikenButton;
+    public bool shurikenUnlocked { get; private set; }
 
     [Header("Explosive Shuriken")]
+    [SerializeField] private UISkillTreeSlots unlockExplosiveButton;
     [SerializeField] private bool canExplode;
 
     [Header("Moving shuriken")]
+    [SerializeField] private UISkillTreeSlots unlockMovingShurikenButton;
     [SerializeField] private bool canMoveToEnemy;
     [SerializeField] private float moveSpeed;
 
     [Header("Multi stacking shuriken")]
+    [SerializeField] private UISkillTreeSlots unlockMultiStackButton;
     [SerializeField] private bool canUseMultiStacks;
     [SerializeField] private int amountOfStacks;
     [SerializeField] private float multiStackCooldown;
     [SerializeField] private float useTimeWondow;
     [SerializeField] private List<GameObject> shurikenLeft=new List<GameObject>();
+
+
+    protected override void Start()
+    {
+        base.Start();
+        unlockShurikenButton.GetComponent<Button>().onClick.AddListener(UnlockShuriken);
+        unlockCloneInsteadButton.GetComponent<Button>().onClick.AddListener(UnlockShurikenMirage);
+        unlockExplosiveButton.GetComponent<Button>().onClick.AddListener(UnlockExplosiveShuriken);
+        unlockMovingShurikenButton.GetComponent<Button>().onClick.AddListener(UnlockMovingShuriken);
+        unlockMultiStackButton.GetComponent<Button>().onClick.AddListener(UnlockMultiStack);
+
+    }
+    #region Unlock skill region
+
+    private void UnlockShuriken()
+    {
+        if (unlockShurikenButton.unLocked)
+            shurikenUnlocked = true;
+    }
+    private void UnlockShurikenMirage()
+    {
+        if (unlockCloneInsteadButton.unLocked)
+            cloneInsteadOfShuriken = true;
+    }
+
+    private void UnlockExplosiveShuriken()
+    {
+        if(unlockExplosiveButton.unLocked)
+            canExplode = true;
+    }
+    
+    private void UnlockMovingShuriken()
+    {
+        if (unlockMovingShurikenButton.unLocked)
+            canMoveToEnemy = true;
+    }
+
+    private void UnlockMultiStack()
+    {
+        if(unlockMultiStackButton.unLocked)
+            canUseMultiStacks = true;
+    }
+    #endregion
 
     public override void UseSkill()
     {
@@ -49,7 +100,7 @@ public class ShurikenSkill : Skill
 
             if (cloneInsteadOfShuriken)
             {
-                SkillManager.instance.cloneSkill.CreateClone(currentShuriken.transform);
+                SkillManager.instance.cloneSkill.CreateClone(currentShuriken.transform,Vector3.zero);
                 Destroy(currentShuriken);
             }
             else

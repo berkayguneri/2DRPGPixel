@@ -32,9 +32,9 @@ public class PlayerAimSwordState : PlayerState
 
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (player.transform.position.x > mousePosition.x && player.facingDirection == 1)
+        if (player.transform.position.x > mousePosition.x && player.facingDir == 1)
             player.Flip();
-        else if(player.transform.position.x<mousePosition.x && player.facingDirection==-1)
+        else if(player.transform.position.x<mousePosition.x && player.facingDir==-1)
             player.Flip();
 
     }

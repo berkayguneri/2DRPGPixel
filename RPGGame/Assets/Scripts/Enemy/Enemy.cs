@@ -105,12 +105,12 @@ public class Enemy : Entity
 
     public virtual void AnimationFinishTrigger() =>stateMachine.currentState.AnimationFinishTrigger();
 
-    public virtual RaycastHit2D IsPlayerDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDirection, 50, whatIsPlayer);
+    public virtual RaycastHit2D IsPlayerDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, 50, whatIsPlayer);
 
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x + attackDistance * facingDirection, transform.position.y));
+        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x + attackDistance * facingDir, transform.position.y));
     }
 }

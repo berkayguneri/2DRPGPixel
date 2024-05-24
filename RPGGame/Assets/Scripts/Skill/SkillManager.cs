@@ -10,6 +10,8 @@ public class SkillManager : MonoBehaviour
     public CloneSkill cloneSkill { get; private set; }
     public SwordSkill swordSkill { get; private set; }
     public ShurikenSkill shurikenSkill { get; private set; }
+    public ParrySkill parrySkill { get; private set; }
+    public DodgeSkill dodgeSkill { get; private set; }
     private void Awake()
     {
         if (instance != null)
@@ -23,5 +25,7 @@ public class SkillManager : MonoBehaviour
         cloneSkill = GetComponent<CloneSkill>();
         swordSkill=GetComponent<SwordSkill>();
         shurikenSkill = GetComponent<ShurikenSkill>();
+        parrySkill=GetComponent<ParrySkill>();
+        dodgeSkill=GetComponent<DodgeSkill>();
     }
 }

@@ -28,7 +28,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected float wallCheckDistance;
     [SerializeField] protected LayerMask whatIsGround;
 
-    public int facingDirection { get; private set; } = 1;
+    public int facingDir { get; private set; } = 1;
     protected bool facingRight = true;
 
     public System.Action onFlipped;
@@ -75,7 +75,7 @@ public class Entity : MonoBehaviour
     {
         isKnocked = true;
 
-        rb.velocity = new Vector2(knocBackDirection.x * -facingDirection,knocBackDirection.y);
+        rb.velocity = new Vector2(knocBackDirection.x * -facingDir,knocBackDirection.y);
 
         yield return new WaitForSeconds(knockBackDuration);
 
@@ -101,7 +101,7 @@ public class Entity : MonoBehaviour
     #endregion
     #region Collision
     public virtual bool IsGroundDetected() => Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsGround);
-    public virtual bool IsWallDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDirection, wallCheckDistance, whatIsGround);
+    public virtual bool IsWallDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, wallCheckDistance, whatIsGround);
     protected virtual void OnDrawGizmos()
     {
         Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
@@ -112,7 +112,7 @@ public class Entity : MonoBehaviour
     #region Flip
     public virtual void Flip()
     {
-        facingDirection = facingDirection * -1;
+        facingDir = facingDir * -1;
         facingRight = !facingRight;
         transform.Rotate(0, 180, 0);
 

@@ -30,7 +30,7 @@ public class PlayerWallSlideState : PlayerState
 
         if (xInput != 0)
         {
-            if (player.facingDirection != xInput)
+            if (player.facingDir != xInput)
                 stateMachine.ChangeState(player.idleState);
         }
         if (yInput < 0)

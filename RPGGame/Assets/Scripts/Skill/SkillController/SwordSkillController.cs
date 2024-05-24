@@ -123,7 +123,7 @@ public class SwordSkillController : MonoBehaviour
             {
                 spinTimer -= -Time.deltaTime;
 
-                 transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x + spinDirection, transform.position.y), 1.5f * Time.deltaTime);
+                //transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x + spinDirection, transform.position.y), 1.5f * Time.deltaTime);
                 if (spinTimer < 0)
                 {
                     isReturning = true;
@@ -196,8 +196,16 @@ public class SwordSkillController : MonoBehaviour
 
     private void SwordSkillDamage(Enemy enemy)
     {
-        player.stats.DoDamage(enemy.GetComponent<CharacterStats>());
-        enemy.FreezeTimeFor(freezeTimeDuration);
+        EnemyStats enemyStats=enemy.GetComponent<EnemyStats>();
+
+        player.stats.DoDamage(enemyStats);
+
+        if (player.skill.swordSkill.timeStopUnlock)
+            enemy.FreezeTimeFor(freezeTimeDuration);
+
+        if (player.skill.swordSkill.vulnerableUnlock)
+            enemyStats.MakeVulnarebleFor(freezeTimeDuration);
+            
 
         ItemData_Equippment equipedAmulet = Inventory.instance.GetEquipment(EquipmentType.Amulet);
 

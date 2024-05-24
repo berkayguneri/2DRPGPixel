@@ -5,10 +5,13 @@ using UnityEngine;
 public class CloneSkillController : MonoBehaviour
 {
     private Player player;
-    [SerializeField] private float colorLosingSpeed;
-    private float cloneTimer;
     private SpriteRenderer sr;
     private Animator anim;
+
+    [SerializeField] private float colorLosingSpeed;
+
+    private float cloneTimer;
+    private float attakcMultiplier;
     [SerializeField] Transform attackCheck;
     [SerializeField] float attackCheckRadius = .8f;
     private Transform closestEnemy;
@@ -37,16 +40,17 @@ public class CloneSkillController : MonoBehaviour
             }
         }
     }
-    public void SetUpClone(Transform _newTransform, float _cloneDuration, bool _canAttack, Transform _closestEnemy,bool _canDuplicate,float _chanceToDuplicate,Player _player)
+    public void SetUpClone(Transform _newTransform, float _cloneDuration, bool _canAttack, Vector3 _offset,  Transform _closestEnemy,bool _canDuplicate,float _chanceToDuplicate,Player _player,float _attackMultiplier)
     {
         if (_canAttack)
             anim.SetInteger("AttackNumber", Random.Range(1, 3));
 
         
-        transform.position = _newTransform.position + new Vector3(0, .7f, 0);
+        attakcMultiplier= _attackMultiplier;
         cloneTimer = _cloneDuration;
+        transform.position = _newTransform.position + _offset;
 
-        player= _player;
+        player = _player;
         closestEnemy = _closestEnemy;
         canDuplicateClone = _canDuplicate;
         chanceToDuplicate = _chanceToDuplicate;
@@ -66,14 +70,24 @@ public class CloneSkillController : MonoBehaviour
         {
             if (hit.GetComponent<Enemy>() != null)
             {
+                PlayerStats playerStats = player.GetComponent<PlayerStats>();
+                EnemyStats enemyStats=hit.GetComponent<EnemyStats>();
 
-                player.stats.DoDamage(hit.GetComponent<CharacterStats>());
+                playerStats.CloneDoDamage(enemyStats, attakcMultiplier);
+
+                if (player.skill.cloneSkill.canApplyOnHitEffect)
+                {
+                    ItemData_Equippment weaponData = Inventory.instance.GetEquipment(EquipmentType.Weapon);
+
+                    if (weaponData != null)
+                        weaponData.Effect(hit.transform);
+                }
 
                 if (canDuplicateClone)
                 {
                     if (Random.Range(0, 100) < chanceToDuplicate)
                     {
-                        SkillManager.instance.cloneSkill.CreateClone(hit.transform);//ekleme yapilabilir
+                        SkillManager.instance.cloneSkill.CreateClone(hit.transform,new Vector3(0.5f * facingDirection,0));//ekleme yapilabilir
                     }
                 }
             }

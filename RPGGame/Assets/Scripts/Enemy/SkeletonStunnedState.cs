@@ -16,7 +16,7 @@ public class SkeletonStunnedState : EnemyState
         enemy.fX.InvokeRepeating("RedColorBlink",0,.1f);
 
         stateTimer = enemy.stunDuration;
-        rb.velocity=new Vector2(-enemy.facingDirection * enemy.stunDir.x, enemy.stunDir.y);
+        rb.velocity=new Vector2(-enemy.facingDir * enemy.stunDir.x, enemy.stunDir.y);
     }
 
     public override void Exit()

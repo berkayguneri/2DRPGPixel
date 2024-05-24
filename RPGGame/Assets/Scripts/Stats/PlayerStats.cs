@@ -35,4 +35,32 @@ public class PlayerStats : CharacterStats
             currentArmor.Effect(player.transform);
         }
     }
+
+    public override void OnEvasion()
+    {
+        Debug.Log("player avoided attack");
+        player.skill.dodgeSkill.CreateMirageOnDodge();
+    }
+
+    public void CloneDoDamage(CharacterStats _targetStats, float _multiplier)
+    {
+        if (TargetCanAvoidAttack(_targetStats))
+            return;
+
+        int totalDamage = damage.GetValue() + strength.GetValue();
+        if (_multiplier > 0)
+            totalDamage = Mathf.RoundToInt(totalDamage * _multiplier);
+
+        if (CanCrit())
+        {
+            totalDamage = CalculateCriticalDamage(totalDamage);
+            Debug.Log("Total crit damage is" + totalDamage);
+        }
+
+
+        totalDamage = CheckTargetArmor(_targetStats, totalDamage);
+
+        _targetStats.TakeDamage(totalDamage);
+        DoMagicalDamage(_targetStats); // birincil saldýrýya sihirli vuruþ uygulamak istemiyorsanýz kaldýrýn
+    }
 }

@@ -88,7 +88,7 @@ public class Player : Entity
         stateMachine.currentState.Update();
         CheckForDashInput();
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && skill.shurikenSkill.shurikenUnlocked)
             skill.shurikenSkill.CanUseSkill();
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -140,14 +140,17 @@ public class Player : Entity
         if (IsWallDetected())
             return;
 
-        
+
+        if (skill.dashSkill.dashUnlocked == false)
+            return;
+
         if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dashSkill.CanUseSkill())
         {
         
             dashDirection = Input.GetAxisRaw("Horizontal");
 
             if (dashDirection == 0)
-                dashDirection = facingDirection;
+                dashDirection = facingDir;
 
             stateMachine.ChangeState(dashState);
         }
