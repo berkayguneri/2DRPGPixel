@@ -34,7 +34,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] private float lastTimeUsedFlask;
     [SerializeField] private float lastTimeUsedArmor;
 
-    private float flaskCooldown;
+    public float flaskCooldown { get; private set; }
     private float armorCooldown;
 
     private void Awake()

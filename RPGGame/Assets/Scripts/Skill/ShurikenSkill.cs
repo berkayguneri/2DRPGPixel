@@ -100,7 +100,7 @@ public class ShurikenSkill : Skill
 
             if (cloneInsteadOfShuriken)
             {
-                SkillManager.instance.cloneSkill.CreateClone(currentShuriken.transform,Vector3.zero);
+                SkillManager.instance.cloneSkill.CreateClone(currentShuriken.transform,new Vector3(2 * player.facingDir,0.78f));
                 Destroy(currentShuriken);
             }
             else

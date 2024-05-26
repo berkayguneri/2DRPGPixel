@@ -96,12 +96,12 @@ public class CloneSkill : Skill
         GameObject newClone=Instantiate(clonePrefab);
 
         newClone.GetComponent<CloneSkillController>().
-            SetUpClone(_clonePosition,cloneDuration,canAttack,_offset,FindClosestEnemy(newClone.transform),canDuplicateClone,chanceToDuplicate,player,attackMultipler);
+            SetUpClone(_clonePosition,cloneDuration,canAttack,_offset/*,FindClosestEnemy(newClone.transform)*/,canDuplicateClone,chanceToDuplicate,player,attackMultipler);
     }
   
     public void CreateCloneWithDelay(Transform _enemyTransform)
     {
-        StartCoroutine(CloneDelayCoroutine(_enemyTransform, new Vector3(2 * player.facingDir, 0)));
+        StartCoroutine(CloneDelayCoroutine(_enemyTransform, new Vector3(2 * player.facingDir, 0.466f)));
     }
 
     private IEnumerator CloneDelayCoroutine(Transform _transform,Vector3 _offset)

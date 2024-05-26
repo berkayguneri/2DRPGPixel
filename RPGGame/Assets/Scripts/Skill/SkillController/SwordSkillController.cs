@@ -91,6 +91,8 @@ public class SwordSkillController : MonoBehaviour
         //rb.isKinematic = false;
         transform.parent = null;
         isReturning = true;
+
+        
     }
 
     private void Update()
