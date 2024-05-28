@@ -84,7 +84,6 @@ public class CharacterStats : MonoBehaviour
 
         fX=GetComponent<EntityFX>();
 
-        Debug.Log("character stats called");
     }
 
 

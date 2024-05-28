@@ -77,6 +77,15 @@ public class ShurikenSkill : Skill
     }
     #endregion
 
+    protected override void CheckUnlock()
+    {
+        UnlockShuriken();
+        UnlockShurikenMirage();
+        UnlockExplosiveShuriken();
+        UnlockMovingShuriken();
+        UnlockMultiStack();
+    }
+
     public override void UseSkill()
     {
         base.UseSkill();

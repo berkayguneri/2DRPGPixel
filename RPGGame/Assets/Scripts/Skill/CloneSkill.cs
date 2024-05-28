@@ -48,6 +48,14 @@ public class CloneSkill : Skill
 
     #region Unlock Region
 
+    protected override void CheckUnlock()
+    {
+        UnlockCloneAttack();
+        UnlockAggresiveClone();
+        UnlockMultiClone();
+        UnlockShurikenInstead();
+    }
+
     private void UnlockCloneAttack()
     {
         if (cloneAttackUnlockButton.unLocked)

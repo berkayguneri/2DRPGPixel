@@ -22,7 +22,6 @@ public class HealthBarUI : MonoBehaviour
 
         UpdateHealthUI();
 
-        Debug.Log("health bar ui called");
     }
 
 
