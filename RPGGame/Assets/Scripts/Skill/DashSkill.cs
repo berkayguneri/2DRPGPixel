@@ -40,7 +40,6 @@ public class DashSkill : Skill
     }
     private void UnlockDash()
     {
-        Debug.Log("attempt to unlock dash");
         if (dashUnlockButton.unLocked)
         {
             dashUnlocked = true;

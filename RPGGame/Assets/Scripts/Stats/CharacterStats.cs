@@ -147,7 +147,6 @@ public class CharacterStats : MonoBehaviour
         if (CanCrit())
         {
             totalDamage=CalculateCriticalDamage(totalDamage);
-            Debug.Log("Total crit damage is" + totalDamage);
         }
 
 
@@ -416,10 +415,8 @@ public class CharacterStats : MonoBehaviour
     protected int CalculateCriticalDamage(int _damage)
     {
         float totalCritPower=(critPower.GetValue() + strength.GetValue()) * .01f;
-        Debug.Log("total crit power %" + totalCritPower);
 
         float critDamage=_damage * totalCritPower;
-        Debug.Log("crit damage before round up " + critDamage);
 
         return Mathf.RoundToInt(critDamage);
     }

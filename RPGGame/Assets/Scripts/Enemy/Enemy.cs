@@ -38,7 +38,6 @@ public class Enemy : Entity
     {
         base.Update();
         stateMachine.currentState.Update();
-        
     }
 
     public virtual void AssignLastAnimName(string _animBoolName) => lastAnimBoolName = _animBoolName;

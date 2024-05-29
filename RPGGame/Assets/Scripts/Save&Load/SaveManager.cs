@@ -6,35 +6,32 @@ using System.Linq;
 public class SaveManager : MonoBehaviour
 {
     public static SaveManager instance;
-    private GameData gameData;
 
     [SerializeField] private string fileName;
     [SerializeField] private bool encryptData;
-
-
-
-    private FileDataHandler fileDataHandler;
+    private GameData gameData;
     private List<ISaveManager> saveManagers;
+    private FileDataHandler dataHandler;
 
     [ContextMenu("Delete save file")]
-    public void DeleteSaveData()
+    public void DeleteSavedData()
     {
-        fileDataHandler = new FileDataHandler(Application.persistentDataPath , fileName,encryptData);
-        fileDataHandler.Delete();
+        dataHandler = new FileDataHandler(Application.persistentDataPath, fileName,encryptData);
+        dataHandler.Delete();
     }
 
     private void Awake()
     {
-        if(instance != null)
+        if (instance != null)
             Destroy(instance.gameObject);
         else
-            instance = this;
+            instance= this;
     }
 
 
     private void Start()
     {
-        fileDataHandler = new FileDataHandler(Application.persistentDataPath,fileName, encryptData);
+        dataHandler = new FileDataHandler(Application.persistentDataPath,fileName, encryptData);
         saveManagers=FindAllSaveManagers();
 
         LoadGame();
@@ -46,8 +43,8 @@ public class SaveManager : MonoBehaviour
 
     public void LoadGame()
     {
+        gameData = dataHandler.Load();
 
-        gameData = fileDataHandler.Load();
         if (this.gameData == null)
         {
             Debug.Log("No saved data found");
@@ -59,6 +56,7 @@ public class SaveManager : MonoBehaviour
             saveManager.LoadData(gameData);
         }
 
+        Debug.Log("Loaded currency " + gameData.currency);
     }
 
     public void SaveGame()
@@ -67,19 +65,30 @@ public class SaveManager : MonoBehaviour
         {
             saveManager.SaveData(ref gameData);
         }
-        fileDataHandler.Save(gameData);
-    }
 
+        dataHandler.Save(gameData);
+
+    }
 
     private void OnApplicationQuit()
     {
         SaveGame();
     }
 
-    private List<ISaveManager> FindAllSaveManagers() // Tum scriptlerde ISaveManagera ulasmanin kolay hali
+    private List<ISaveManager> FindAllSaveManagers()
     {
-        IEnumerable<ISaveManager> saveManagers= FindObjectsOfType<MonoBehaviour>().OfType<ISaveManager>();
+        IEnumerable<ISaveManager> saveManagers = FindObjectsOfType<MonoBehaviour>().OfType<ISaveManager>();
 
         return new List<ISaveManager>(saveManagers);
+    }
+    
+
+    public bool HasSavedData()
+    {
+        if (dataHandler.Load() != null)
+        {
+            return true;
+        }
+        return false;
     }
 }

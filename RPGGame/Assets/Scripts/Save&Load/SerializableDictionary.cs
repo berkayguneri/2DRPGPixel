@@ -5,19 +5,21 @@ using UnityEngine;
 [System.Serializable]
 public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
 {
-    [SerializeField] private List <TKey> keys = new List <TKey> ();
-    [SerializeField] private List <TValue> values = new List <TValue> ();
+    [SerializeField] private List<TKey> keys=new List<TKey>();
+    [SerializeField] private List<TValue> values=new List<TValue>();
+
     public void OnBeforeSerialize()
     {
         keys.Clear();
-        values.Clear ();    
+        values.Clear();
 
-        foreach(KeyValuePair<TKey, TValue> pair in this)
+        foreach (KeyValuePair<TKey, TValue> pair in this)
         {
             keys.Add(pair.Key);
             values.Add(pair.Value);
         }
     }
+
     public void OnAfterDeserialize()
     {
         this.Clear();
@@ -25,7 +27,6 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
         if (keys.Count != values.Count)
         {
             Debug.Log("keys count is not equal to values count");
-            
         }
 
         for (int i = 0; i < keys.Count; i++)
@@ -34,4 +35,5 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
         }
     }
 
+   
 }

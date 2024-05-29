@@ -1,4 +1,4 @@
-    using System.Text;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,7 +25,7 @@ public class ItemData : ScriptableObject
     {
 #if UNITY_EDITOR
         string path= AssetDatabase.GetAssetPath(this);
-        itemId= AssetDatabase.AssetPathToGUID(path);
+        itemId=AssetDatabase.AssetPathToGUID(path);
 #endif
     }
 

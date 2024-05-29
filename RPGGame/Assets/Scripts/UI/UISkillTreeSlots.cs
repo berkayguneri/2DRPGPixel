@@ -92,6 +92,7 @@ public class UISkillTreeSlots : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         if (_data.skillTree.TryGetValue(skillName, out bool value))
         {
             unLocked = value;
+           
         }
     }
 

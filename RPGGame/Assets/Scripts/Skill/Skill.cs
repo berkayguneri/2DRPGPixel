@@ -12,7 +12,8 @@ public class Skill : MonoBehaviour
     protected virtual void Start()
     {
         player = PlayerManager.instance.player;
-        CheckUnlock();
+        //CheckUnlock();
+        Invoke("CheckUnlock", .1f);
     }
 
     protected virtual void Update()
