@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour,ISaveManager
         }
 
         closestCheckPointId = _data.closestCheckPointID;
-        Invoke("PlacePlayerAtClosestCheckpoint",0.1f);
+        Invoke("PlacePlayerAtClosestCheckpoint", 0.1f);
 
         Debug.Log("Game manager loaded");
     }
@@ -56,7 +56,10 @@ public class GameManager : MonoBehaviour,ISaveManager
 
     public void SaveData(ref GameData _data)
     {
-        _data.closestCheckPointID = FindClosestCheckPoint().id;
+        if (FindClosestCheckPoint() != null)
+            _data.closestCheckPointID = FindClosestCheckPoint().id;
+
+        //_data.closestCheckPointID = FindClosestCheckPoint().id;
         _data.checkPoints.Clear();
 
         foreach(CheckPoint checkPoint in checkPoints)
@@ -81,5 +84,13 @@ public class GameManager : MonoBehaviour,ISaveManager
             }
         }
         return closestCheckpoint;
+    }
+
+    public void PauseGame(bool _pause)
+    {
+        if (_pause)
+            Time.timeScale = 0;
+        else
+            Time.timeScale = 1;
     }
 }

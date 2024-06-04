@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Enemy : Entity
 {
+
     [SerializeField] protected LayerMask whatIsPlayer;
 
     [Header("Stunned")]
@@ -22,9 +23,12 @@ public class Enemy : Entity
     [Header("Attack")]
     public float attackDistance;
     public float attackCooldown;
+    public float minAttackCooldown;
+    public float maxAttackCooldown;
     [HideInInspector] public float lastAttackTime;
 
     public EnemyStateMachine stateMachine { get; private set; }
+    public EntityFX fX { get; private set; }
     public string lastAnimBoolName {  get; private set; }
 
     protected override void Awake()
@@ -32,6 +36,12 @@ public class Enemy : Entity
         base.Awake();
         stateMachine = new EnemyStateMachine();
         defaultMoveSpeed = moveSpeed;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        fX = GetComponent<EntityFX>();
     }
 
     protected override void Update()
@@ -104,7 +114,18 @@ public class Enemy : Entity
 
     public virtual void AnimationFinishTrigger() =>stateMachine.currentState.AnimationFinishTrigger();
 
-    public virtual RaycastHit2D IsPlayerDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, 50, whatIsPlayer);
+    public virtual RaycastHit2D IsPlayerDetected()
+    {
+        RaycastHit2D playerDetected = Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, 50, whatIsPlayer);
+        RaycastHit2D wallDetected = Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, 50, whatIsGround);
+
+        if (wallDetected)
+        {
+            if(wallDetected.distance<playerDetected.distance)
+                return default(RaycastHit2D);
+        }
+        return playerDetected;
+    }
 
     protected override void OnDrawGizmos()
     {

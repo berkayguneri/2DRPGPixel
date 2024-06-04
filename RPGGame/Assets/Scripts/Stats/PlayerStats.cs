@@ -29,6 +29,16 @@ public class PlayerStats : CharacterStats
     {
         base.DecreaseHealthBy(_damage);
 
+        if (_damage > GetMaxHealthValue() * .3f)
+        {
+            player.SetupKnockBackPower(new Vector2(10,6));
+
+            player.playerFX.CameraShake(player.playerFX.shakeHighDamage);
+
+            Debug.Log("Uctum");
+            AudioManager.instance.PlaySFX(34, null);
+        }
+
         ItemData_Equippment currentArmor = Inventory.instance.GetEquipment(EquipmentType.Armor);
         if(currentArmor != null)
         {

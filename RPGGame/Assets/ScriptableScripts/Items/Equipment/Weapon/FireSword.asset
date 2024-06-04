@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7bf6f76bbd5514a8938a4381e21851, type: 3}
+  m_Name: FireSword
+  m_EditorClassIdentifier: 
+  itemType: 1
+  itemName: Fire Sword
+  itemIcon: {fileID: 1071341138, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  itemId: 82887d9e82d22c840b93ecc5d4918d4f
+  dropChance: 64
+  equipmentType: 0
+  itemCooldown: 0
+  itemEffect:
+  - {fileID: 11400000, guid: 66db9ee423b80d6418aebfdaafec868f, type: 2}
+  strength: 12
+  agility: 12
+  intelligence: 5
+  vitality: 5
+  damage: 10
+  critiChance: 18
+  critPower: 0
+  health: 0
+  armor: 0
+  evasion: 3
+  magicResistance: 0
+  fireDamage: 5
+  iceDamage: 0
+  lightingDamage: 0
+  craftingMaterials:
+  - data: {fileID: 11400000, guid: a347daf0984aefd4d8dbf7235ebf0834, type: 2}
+    stackSize: 1

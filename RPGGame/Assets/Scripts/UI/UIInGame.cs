@@ -24,6 +24,7 @@ public class UIInGame : MonoBehaviour
         if(playerStats != null)
         {
             playerStats.onHealthChanged += UpdateHealthUI;
+            
         }
 
         skillManager = SkillManager.instance;

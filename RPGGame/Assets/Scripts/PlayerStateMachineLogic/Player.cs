@@ -27,6 +27,7 @@ public class Player : Entity
 
     public SkillManager skill {  get; private set; }
     public GameObject sword { get; private set; }
+    public PlayerFX playerFX { get; private set; }
     
 
     #region States
@@ -73,6 +74,8 @@ public class Player : Entity
     {
         base.Start();
 
+        playerFX=GetComponent<PlayerFX>();
+
         skill = SkillManager.instance;
 
         stateMachine.Initialize(idleState);
@@ -84,6 +87,9 @@ public class Player : Entity
 
     protected override void Update()
     {
+        if (Time.timeScale == 0)
+            return;
+
         base.Update();
         stateMachine.currentState.Update();
         CheckForDashInput();
@@ -92,7 +98,9 @@ public class Player : Entity
             skill.shurikenSkill.CanUseSkill();
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
             Inventory.instance.UseFlask();
+        }
     }
 
 
@@ -161,6 +169,11 @@ public class Player : Entity
         base.Die();
 
         stateMachine.ChangeState(deadState);
+    }
+
+    protected override void SetupZeroKnockbackPower()
+    {
+        knockBackPower = new Vector2(0, 0);
     }
 
 }

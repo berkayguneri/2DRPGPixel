@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -74,6 +75,7 @@ public class CharacterStats : MonoBehaviour
     public int currentHealth;
     public System.Action onHealthChanged;
     public bool isDead { get; private set; }
+    public bool isInvicible { get; private set; }
     private bool isVulnurable;
 
     protected virtual void Start()
@@ -139,16 +141,22 @@ public class CharacterStats : MonoBehaviour
 
     public virtual void DoDamage(CharacterStats _targetStats)
     {
+        bool criticalStrike = false;
+
         if (TargetCanAvoidAttack(_targetStats))
             return;
+
+        _targetStats.GetComponent<Entity>().SetupKnockbackDirection(transform);
 
         int totalDamage = damage.GetValue() + strength.GetValue();
 
         if (CanCrit())
         {
             totalDamage=CalculateCriticalDamage(totalDamage);
+            criticalStrike = true;
         }
 
+        fX.CreateHitFx(_targetStats.transform,criticalStrike);
 
         totalDamage = CheckTargetArmor(_targetStats, totalDamage);
 
@@ -320,6 +328,10 @@ public class CharacterStats : MonoBehaviour
     #endregion
     public virtual void TakeDamage(int _damage)
     {
+        if (isInvicible)
+            return;
+
+
         DecreaseHealthBy(_damage);
 
         GetComponent<Entity>().DamageImpact();
@@ -349,6 +361,10 @@ public class CharacterStats : MonoBehaviour
             _damage =Mathf.RoundToInt(_damage * 1.1f);
 
         currentHealth -= _damage;
+
+        if (_damage > 0)
+            fX.CreatePopUpText(_damage.ToString());
+
         if (onHealthChanged != null)
         {
             onHealthChanged();
@@ -359,6 +375,17 @@ public class CharacterStats : MonoBehaviour
     {
         isDead = true;
     }
+
+    public void KillEntity()
+    {
+        if(!isDead)
+            Die();
+    }
+
+    public void MakeInvincible(bool _invicible) => isInvicible = _invicible;
+    
+
+
     #region Stat calculation
     protected int CheckTargetArmor(CharacterStats _targetStats, int totalDamage)
     {

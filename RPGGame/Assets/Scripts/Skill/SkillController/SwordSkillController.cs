@@ -91,7 +91,6 @@ public class SwordSkillController : MonoBehaviour
         //rb.isKinematic = false;
         transform.parent = null;
         isReturning = true;
-
         
     }
 
@@ -213,6 +212,8 @@ public class SwordSkillController : MonoBehaviour
 
         if (equipedAmulet != null)
             equipedAmulet.Effect(enemy.transform);
+
+        AudioManager.instance.PlaySFX(28, null);
     }
 
     private void SetupTargetsForBounce(Collider2D collision)
@@ -252,6 +253,7 @@ public class SwordSkillController : MonoBehaviour
 
         rb.isKinematic = true;
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        GetComponentInChildren<ParticleSystem>().Play();
 
         if (isBouncing && enemyTarget.Count>0)
             return;

@@ -57,17 +57,20 @@ public class UIItemSlot : MonoBehaviour, IPointerDownHandler,IPointerEnterHandle
         if (Input.GetKey(KeyCode.LeftControl))
         {
             Inventory.instance.RemoveItem(item.data);
+
+            AudioManager.instance.PlaySFX(7, null);
             return;
+            
         }
 
         if (item.data.itemType == ItemType.Equipment)
         {
             Inventory.instance.EquipItem(item.data);
+            AudioManager.instance.PlaySFX(7, null);
             //Debug.Log("Equipped new item" + item.data.itemName);
         }
 
         ui.itemToolTip.HideToolTip();
-
 
     }
 

@@ -65,6 +65,8 @@ public class ShurikenSkillController : MonoBehaviour
         {
             if (hit.GetComponent<Enemy>() != null)
             {
+                hit.GetComponent<Entity>().SetupKnockbackDirection(transform);
+
                 player.stats.DoMagicalDamage(hit.GetComponent<CharacterStats>());
 
                 ItemData_Equippment equipedAmulet = Inventory.instance.GetEquipment(EquipmentType.Amulet);

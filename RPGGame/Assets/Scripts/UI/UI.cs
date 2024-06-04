@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UI : MonoBehaviour
+public class UI : MonoBehaviour,ISaveManager
 {
     [Header("End Screen")]
     [SerializeField] UIFadeScreen fadeScreen;
@@ -23,6 +23,8 @@ public class UI : MonoBehaviour
     public UIStatToolTip statToolTip;
 
     public UICraftWindow craftWindow;
+
+    [SerializeField] private UIVolumeSlider[] volumeSetttings;
 
     private void Awake()
     {
@@ -66,7 +68,18 @@ public class UI : MonoBehaviour
         }
 
         if (_menu != null)
+        {
+            AudioManager.instance.PlaySFX(7, null);
             _menu.SetActive(true);
+        }
+
+        if(GameManager.instance != null)
+        {
+            if (_menu == inGameUI)
+                GameManager.instance.PauseGame(false);
+            else
+                GameManager.instance.PauseGame(true);
+        }
     }
 
     public void SwitchWithKeyTo(GameObject _menu)
@@ -85,7 +98,7 @@ public class UI : MonoBehaviour
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            if (transform.GetChild(i).gameObject.activeSelf)
+            if (transform.GetChild(i).gameObject.activeSelf && transform.GetChild(i).GetComponent<UIFadeScreen>() == null)
                 return;
         }
 
@@ -109,4 +122,26 @@ public class UI : MonoBehaviour
     }
 
     public void RestartGameButton() => GameManager.instance.RestartScene();
+
+    public void LoadData(GameData _data)
+    {
+        foreach (KeyValuePair<string, float> pair in _data.volumeSettings)
+        {
+            foreach (UIVolumeSlider item in volumeSetttings)
+            {
+                if (item.parameter == pair.Key)
+                    item.LoadSlider(pair.Value);
+            }
+        }
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        _data.volumeSettings.Clear();
+
+        foreach (UIVolumeSlider item in volumeSetttings)
+        {
+            _data.volumeSettings.Add(item.parameter, item.slider.value);
+        }
+    }
 }

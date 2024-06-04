@@ -13,7 +13,9 @@ public class SkeletonDeadState : EnemyState
     public override void Enter()
     {
         base.Enter();
+        AudioManager.instance.PlaySFX(20, null);
 
+        PlayerManager.instance.currency = PlayerManager.instance.currency + 10;
         enemy.anim.SetBool(enemy.lastAnimBoolName, true);
         enemy.anim.speed = 0;
         enemy.cd.enabled = false;

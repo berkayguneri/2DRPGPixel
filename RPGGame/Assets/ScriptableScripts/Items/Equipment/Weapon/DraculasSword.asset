@@ -15,15 +15,16 @@ MonoBehaviour:
   itemType: 1
   itemName: Draculas Sword
   itemIcon: {fileID: -1944902997, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  itemId: 8f4ca5a8c3eba554a9e8b1c65eb9e144
   dropChance: 8.8
   equipmentType: 0
   itemCooldown: 0
   itemEffect:
   - {fileID: 11400000, guid: 4964785236c2fae4aa17d9214cddd5fe, type: 2}
-  strength: 0
-  agility: 0
-  intelligence: 0
-  vitality: 0
+  strength: 10
+  agility: 10
+  intelligence: 4
+  vitality: 4
   damage: 15
   critiChance: 15
   critPower: 0

@@ -38,6 +38,7 @@ public class Inventory : MonoBehaviour,ISaveManager
     private float armorCooldown;
 
     [Header("Data base")]
+    public List<ItemData> itemDataBase;
     public List<InventoryItem> loadedItems;
     public List<ItemData_Equippment> loadedEquipment;
    
@@ -133,6 +134,7 @@ public class Inventory : MonoBehaviour,ISaveManager
             equipment.Remove(value);
             equipmentDictionary.Remove(itemToRemove);
             itemToRemove.RemoveModifiers();
+            AudioManager.instance.PlaySFX(7, null);
         }
     }
 
@@ -254,36 +256,32 @@ public class Inventory : MonoBehaviour,ISaveManager
 
     public bool CanCraft(ItemData_Equippment _itemToCraft, List<InventoryItem> _requiredMaterials)
     {
-        List<InventoryItem> materialsToRemove= new List<InventoryItem>();
-
-        for (int i = 0; i < _requiredMaterials.Count; i++)
-        {
-            if (stashDictionary.TryGetValue(_requiredMaterials[i].data, out InventoryItem stashValue)) 
+       foreach(var requiredItem in _requiredMaterials)
+       {
+            if (stashDictionary.TryGetValue(requiredItem.data, out InventoryItem stashItem))
             {
-                if (stashValue.stackSize < _requiredMaterials[i].stackSize)
+                if (stashItem.stackSize < requiredItem.stackSize)
                 {
-                    Debug.Log("not enough materials");
+                    Debug.Log("Not enough materials" + requiredItem.data.name);
                     return false;
-                }
-                else
-                {
-                    materialsToRemove.Add(stashValue);
                 }
             }
             else
             {
-                Debug.Log("not enough materials");
+                Debug.Log("materials not found stash " + requiredItem.data.name);
                 return false;
             }
-        }
-
-        for (int i = 0; i < materialsToRemove.Count; i++)
-        {
-            RemoveItem(materialsToRemove[i].data);
-        }
-
+       }
+       foreach(var requiredMaterial in _requiredMaterials)
+       {
+            for (var i = 0; i < requiredMaterial.stackSize; i++)
+            {
+                RemoveItem(requiredMaterial.data);
+            }
+       }
         AddItem(_itemToCraft);
-        Debug.Log("Here is your item " + _itemToCraft.name);
+        Debug.Log("craft is succesful" + _itemToCraft.name);
+
         return true;
     }
 
@@ -321,6 +319,7 @@ public class Inventory : MonoBehaviour,ISaveManager
 
             currentFlask.Effect(null);
             lastTimeUsedFlask = Time.time;
+            //AudioManager.instance.PlaySFX(25, null);
         }
         else
         {
@@ -348,7 +347,7 @@ public class Inventory : MonoBehaviour,ISaveManager
     {
         foreach (KeyValuePair<string, int> pair in _data.inventory)
         {
-            foreach (var item in GetItemDataBase())
+            foreach (var item in itemDataBase)
             {
                 if (item != null && item.itemId == pair.Key)
                 {
@@ -361,7 +360,7 @@ public class Inventory : MonoBehaviour,ISaveManager
         }
         foreach (string loadedItemId in _data.equipmentId)
         {
-            foreach (var item in GetItemDataBase())
+            foreach (var item in itemDataBase)
             {
                 if (item != null && loadedItemId == item.itemId)
                 {
@@ -394,6 +393,10 @@ public class Inventory : MonoBehaviour,ISaveManager
         }
     }
 
+
+    #if UNITY_EDITOR
+    [ContextMenu("Fill up item data base ")]
+    private void FillUpItemDataBase() => itemDataBase = new List<ItemData>(GetItemDataBase());
     private List<ItemData> GetItemDataBase()
     {
         List<ItemData> itemDataBase= new List<ItemData>();
@@ -407,4 +410,6 @@ public class Inventory : MonoBehaviour,ISaveManager
         }
         return itemDataBase;
     }
+
+#endif
 }

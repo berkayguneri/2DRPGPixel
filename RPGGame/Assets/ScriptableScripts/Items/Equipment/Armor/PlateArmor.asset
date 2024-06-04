@@ -15,14 +15,15 @@ MonoBehaviour:
   itemType: 1
   itemName: PlateArmor
   itemIcon: {fileID: -1581127718, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  itemId: 2c20ff0574eafc4439f5bed2d962a646
   dropChance: 20
   equipmentType: 1
   itemCooldown: 0
   itemEffect: []
-  strength: 0
-  agility: 0
-  intelligence: 0
-  vitality: 0
+  strength: 10
+  agility: 7
+  intelligence: 4
+  vitality: 15
   damage: 0
   critiChance: 0
   critPower: 0

@@ -1361,6 +1361,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3770956714387800905, guid: 3511688aacda22a4885ea0f2b212f801, type: 3}
+      propertyPath: encryptData
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3770956714387800907, guid: 3511688aacda22a4885ea0f2b212f801, type: 3}
       propertyPath: m_Name
       value: SaveManager
@@ -1543,12 +1547,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 854102171884192714, guid: d95cdc0635eb45345bdeb0b335ce507f, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 854102171884192714, guid: d95cdc0635eb45345bdeb0b335ce507f, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 854102171884192719, guid: d95cdc0635eb45345bdeb0b335ce507f, type: 3}
       propertyPath: m_Name
       value: DarkScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 854102171884192719, guid: d95cdc0635eb45345bdeb0b335ce507f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d95cdc0635eb45345bdeb0b335ce507f, type: 3}

@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 [System.Serializable]
-public class GameData 
+public class GameData
 {
     public int currency;
 
@@ -13,6 +11,8 @@ public class GameData
 
     public SerializableDictionary<string, bool> checkPoints;
     public string closestCheckPointID;
+
+    public SerializableDictionary<string, float> volumeSettings;
     public GameData()
     {
         this.currency = 0;
@@ -20,7 +20,9 @@ public class GameData
         inventory = new SerializableDictionary<string, int>();
         equipmentId = new List<string>();
 
-        closestCheckPointID=string.Empty;
-        checkPoints=new SerializableDictionary<string, bool>();
+        closestCheckPointID = string.Empty;
+        checkPoints = new SerializableDictionary<string, bool>();
+
+        volumeSettings = new SerializableDictionary<string, float>();
     }
 }

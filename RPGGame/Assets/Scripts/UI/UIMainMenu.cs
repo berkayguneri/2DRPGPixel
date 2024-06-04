@@ -18,13 +18,15 @@ public class UIMainMenu : MonoBehaviour
     }
     public void ContinueGame()
     {
-        StartCoroutine(LoadSceneWithFadeEffect(1.5f));
+        //StartCoroutine(LoadSceneWithFadeEffect(1.5f)); 
+        SceneManager.LoadScene(sceneName);
     }
 
     public void NewGame()
     {
         SaveManager.instance.DeleteSavedData();
-        StartCoroutine(LoadSceneWithFadeEffect(1.5f));
+        //StartCoroutine(LoadSceneWithFadeEffect(1.5f));
+        SceneManager.LoadScene(sceneName);
     }
 
     public void ExitGame()
@@ -33,12 +35,12 @@ public class UIMainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    IEnumerator LoadSceneWithFadeEffect(float _delay)
-    {
-        fadeScreen.FadeOut();
+    //IEnumerator LoadSceneWithFadeEffect(float _delay)
+    //{
+    //    fadeScreen.FadeOut();
 
-        yield return new WaitForSeconds(_delay);
+    //    yield return new WaitForSeconds(_delay);
 
-        SceneManager.LoadScene(sceneName);
-    }
+    //    SceneManager.LoadScene(sceneName);
+    //}
 }

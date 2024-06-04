@@ -8,6 +8,8 @@ public class SkeletonBattleState : EnemyState
     private Transform player;
     private Enemy_Skeleton enemy;
     private int moveDirection;
+
+    private bool flippedOnce;
     public SkeletonBattleState(Enemy _enemyBase, EnemyStateMachine enemyStateMachine, string _animBoolName,Enemy_Skeleton _enemy) : base(_enemyBase, enemyStateMachine, _animBoolName)
     {
         this.enemy = _enemy;
@@ -18,6 +20,12 @@ public class SkeletonBattleState : EnemyState
         base.Enter();
 
         player = PlayerManager.instance.player.transform;
+
+        if (player.GetComponent<PlayerStats>().isDead)
+            stateMachine.ChangeState(enemy.moveState);
+
+        stateTimer = enemy.battleTime;
+        flippedOnce= false;
     }
 
     public override void Exit()
@@ -29,6 +37,8 @@ public class SkeletonBattleState : EnemyState
     {
         base.Update();
 
+        enemy.anim.SetFloat("xVelocity", enemy.rb.velocity.x);
+        
         if(enemy.IsPlayerDetected())
         {
             stateTimer = enemy.battleTime; 
@@ -40,9 +50,20 @@ public class SkeletonBattleState : EnemyState
         }
         else
         {
+            if (flippedOnce == false)
+            {
+                flippedOnce = true;
+                enemy.Flip();
+            }
+
             if (stateTimer < 0 || Vector2.Distance(player.transform.position, enemy.transform.position) > 10)
                 stateMachine.ChangeState(enemy.idleState);
         }
+
+        float distanceToPlayerX = Mathf.Abs(player.position.x - enemy.transform.position.x);
+
+        if (distanceToPlayerX < 1f)
+            return;
 
         if (player.position.x > enemy.transform.position.x)
             moveDirection = 1;
@@ -57,6 +78,7 @@ public class SkeletonBattleState : EnemyState
     {
         if (Time.time >= enemy.lastAttackTime + enemy.attackCooldown)
         {
+            enemy.attackCooldown=Random.Range(enemy.minAttackCooldown,enemy.maxAttackCooldown);
             enemy.lastAttackTime = Time.time;
             return true;
         }

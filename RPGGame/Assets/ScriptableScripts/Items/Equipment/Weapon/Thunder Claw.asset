@@ -15,17 +15,18 @@ MonoBehaviour:
   itemType: 1
   itemName: Thunder Claw
   itemIcon: {fileID: 367297872, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  itemId: a065ad8ecca2ff44c9f07a5cd5c5845f
   dropChance: 0
   equipmentType: 0
   itemCooldown: 0
   itemEffect:
   - {fileID: 11400000, guid: d516dcbc083614c47ae58137328ae683, type: 2}
-  strength: 0
-  agility: 0
-  intelligence: 0
-  vitality: 0
+  strength: 14
+  agility: 16
+  intelligence: 8
+  vitality: 8
   damage: 10
-  critiChance: 0
+  critiChance: 20
   critPower: 0
   health: 0
   armor: 0

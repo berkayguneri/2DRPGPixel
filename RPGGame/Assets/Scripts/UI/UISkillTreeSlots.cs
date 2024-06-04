@@ -57,6 +57,7 @@ public class UISkillTreeSlots : MonoBehaviour,IPointerEnterHandler,IPointerExitH
             if (shouldBeUnlocked[i].unLocked == false)
             {
                 Debug.Log("Cannot unlock skill");
+                AudioManager.instance.PlaySFX(39, null);
                 return;
             }
         }
@@ -70,7 +71,7 @@ public class UISkillTreeSlots : MonoBehaviour,IPointerEnterHandler,IPointerExitH
             }
         }
 
-
+        AudioManager.instance.PlaySFX(38, null);
         unLocked = true;
         skillImage.color = Color.white;
     }
@@ -79,7 +80,6 @@ public class UISkillTreeSlots : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     {
         ui.skillToolTip.ShowToolTip(skillDescription,skillName,skillCost);
 
-      
     }
 
     public void OnPointerExit(PointerEventData eventData)

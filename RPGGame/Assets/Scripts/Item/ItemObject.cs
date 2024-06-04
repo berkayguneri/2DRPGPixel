@@ -29,9 +29,10 @@ public class ItemObject : MonoBehaviour
         if (!Inventory.instance.CanAddItem() && itemData.itemType == ItemType.Equipment)
         {
             rb.velocity = new Vector2(0, 7);
+            PlayerManager.instance.player.playerFX.CreatePopUpText("Inventory is full");
             return;
         }
-
+        AudioManager.instance.PlaySFX(18, null);
         Inventory.instance.AddItem(itemData);
         Destroy(gameObject);
     }

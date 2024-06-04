@@ -9,13 +9,12 @@ public class Entity : MonoBehaviour
     public Animator anim { get; private set; }
     public SpriteRenderer spriteRenderer { get; private set; }
     public Rigidbody2D rb { get; private set; }
-    public EntityFX fX { get; private set; }
     public CharacterStats stats { get; private set; }
     public CapsuleCollider2D cd { get; private set; }
     #endregion
 
     [Header("Knockback")]
-    [SerializeField] protected Vector2 knocBackDirection;
+    [SerializeField] protected Vector2 knockBackPower;
     [SerializeField] protected float knockBackDuration;
     protected bool isKnocked;
 
@@ -28,6 +27,8 @@ public class Entity : MonoBehaviour
     [SerializeField] protected float wallCheckDistance;
     [SerializeField] protected LayerMask whatIsGround;
 
+
+    public int knockBackDir {  get; private set; }
     public int facingDir { get; private set; } = 1;
     protected bool facingRight = true;
 
@@ -46,8 +47,6 @@ public class Entity : MonoBehaviour
         spriteRenderer=GetComponentInChildren<SpriteRenderer>();
 
         rb = GetComponent<Rigidbody2D>();
-
-        fX = GetComponent<EntityFX>();
 
         stats = GetComponent<CharacterStats>();
 
@@ -71,15 +70,33 @@ public class Entity : MonoBehaviour
 
     public virtual void DamageImpact() => StartCoroutine("HitKnockback");
 
+    public virtual void SetupKnockbackDirection(Transform _damageDirection)
+    {
+        if (_damageDirection.position.x > transform.position.x)
+            knockBackDir = -1;
+        else if(_damageDirection.position.x<transform.position.x)
+            knockBackDir = 1;
+    }
+
+    public void SetupKnockBackPower(Vector2 _knockBackPower) => knockBackPower = _knockBackPower;
+
+    
     protected IEnumerator HitKnockback()
     {
         isKnocked = true;
 
-        rb.velocity = new Vector2(knocBackDirection.x * -facingDir,knocBackDirection.y);
+        rb.velocity = new Vector2(knockBackPower.x * knockBackDir,knockBackPower.y);
 
         yield return new WaitForSeconds(knockBackDuration);
 
         isKnocked = false;
+
+        SetupZeroKnockbackPower();
+    }
+
+    protected virtual void SetupZeroKnockbackPower()
+    {
+
     }
     #region Velocity
     public virtual void SetVelocity(float xVelocity, float yVelocity)
