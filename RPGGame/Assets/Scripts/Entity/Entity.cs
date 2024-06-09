@@ -14,17 +14,18 @@ public class Entity : MonoBehaviour
     #endregion
 
     [Header("Knockback")]
-    [SerializeField] protected Vector2 knockBackPower;
-    [SerializeField] protected float knockBackDuration;
+    [SerializeField] protected Vector2 knockBackPower = new Vector2(7, 12);
+    [SerializeField] protected float knockBackDuration = .07f;
+    [SerializeField] protected Vector2 knockbackOffset = new Vector2(.5f, 2);
     protected bool isKnocked;
 
     [Header("Collision")]
     public Transform attakCheck;
-    public float attackCheckRadius;
+    public float attackCheckRadius = 1.2f;
     [SerializeField] protected Transform groundCheck;
-    [SerializeField] protected float groundCheckDistance;
+    [SerializeField] protected float groundCheckDistance = 1;
     [SerializeField] protected Transform wallCheck;
-    [SerializeField] protected float wallCheckDistance;
+    [SerializeField] protected float wallCheckDistance = .8f;
     [SerializeField] protected LayerMask whatIsGround;
 
 
@@ -85,7 +86,12 @@ public class Entity : MonoBehaviour
     {
         isKnocked = true;
 
-        rb.velocity = new Vector2(knockBackPower.x * knockBackDir,knockBackPower.y);
+        float xOffset = Random.Range(knockbackOffset.x, knockbackOffset.y);
+
+        //rb.velocity = new Vector2(knockBackPower.x * knockBackDir,knockBackPower.y);
+
+        if (knockBackPower.x > 0 || knockBackPower.y > 0) // This line makes player immune to freeze effect when he takes hit
+            rb.velocity = new Vector2((knockBackPower.x + xOffset) * knockBackDuration, knockBackPower.y);
 
         yield return new WaitForSeconds(knockBackDuration);
 
@@ -135,7 +141,6 @@ public class Entity : MonoBehaviour
 
         if (onFlipped != null)
             onFlipped();
-            
 
     }
 
@@ -150,8 +155,15 @@ public class Entity : MonoBehaviour
             Flip();
         }
     }
+    public virtual void SetupDefaultFacingDir(int _direction)
+    {
+        facingDir = _direction;
 
-    
+        if (facingDir == -1)
+            facingRight = false;
+    }
+
+
     #endregion
 
     public void MakeTransparent(bool _transparent)

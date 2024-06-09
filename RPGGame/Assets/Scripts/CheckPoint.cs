@@ -29,9 +29,18 @@ public class CheckPoint : MonoBehaviour
 
     public void ActivateCheckPoint()
     {
-        if(activationStatus==false)
+        if (activationStatus == false)
+        {
             AudioManager.instance.PlaySFX(5, null);
+            //StartCoroutine(PlaySecondFX());
+        }
         activationStatus = true;
         anim.SetBool("active", true);
+    }
+
+    private IEnumerator PlaySecondFX()
+    {
+        yield return new WaitForSeconds(1);
+        AudioManager.instance.PlaySFX(40, null);
     }
 }

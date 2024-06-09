@@ -185,9 +185,27 @@ public class Inventory : MonoBehaviour,ISaveManager
         if (_item.itemType == ItemType.Equipment && CanAddItem())
             AddToInventory(_item);
 
-        else if(_item.itemType == ItemType.Material)
+        else if (_item.itemType == ItemType.Material)
             AddToStash(_item);
 
+        else if (_item.itemType == ItemType.YellowCoin)
+        {
+
+            PlayerManager.instance.currency += 10;
+
+        }
+        else if (_item.itemType == ItemType.PurpleCoin)
+        {
+
+            PlayerManager.instance.currency += 30;
+
+        }
+        else if (_item.itemType == ItemType.RedCoin)
+        {
+ 
+            PlayerManager.instance.currency += 50;
+
+        }
         UpdateSlotUI();
     }
 

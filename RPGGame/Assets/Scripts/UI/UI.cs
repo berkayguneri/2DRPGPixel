@@ -20,6 +20,7 @@ public class UI : MonoBehaviour,ISaveManager
 
     public UISkillToolTip skillToolTip;
     public UIItemToolTip itemToolTip;
+    public UIShopItemToolTip shopItemToolTip;
     public UIStatToolTip statToolTip;
 
     public UICraftWindow craftWindow;

@@ -1,5 +1,7 @@
 using System.Text;
 using UnityEngine;
+using Unity.VisualScripting;
+
 
 
 
@@ -10,7 +12,10 @@ using UnityEditor;
 public enum ItemType
 {
     Material,
-    Equipment
+    Equipment,
+    YellowCoin,
+    PurpleCoin,
+    RedCoin
 }
 
 [CreateAssetMenu(fileName = "New Item Data", menuName = "Data/Item")]
@@ -38,4 +43,6 @@ public class ItemData : ScriptableObject
     {
         return "";
     }
+
+  
 }

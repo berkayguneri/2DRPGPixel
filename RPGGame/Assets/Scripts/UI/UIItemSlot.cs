@@ -71,6 +71,9 @@ public class UIItemSlot : MonoBehaviour, IPointerDownHandler,IPointerEnterHandle
         }
 
         ui.itemToolTip.HideToolTip();
+        //ui.shopItemToolTip.HideShopItemToolTip();
+
+        
 
     }
 
@@ -79,6 +82,9 @@ public class UIItemSlot : MonoBehaviour, IPointerDownHandler,IPointerEnterHandle
         if(item == null) return;
       
         ui.itemToolTip.ShowToolTip(item.data as ItemData_Equippment);
+        ui.shopItemToolTip.ShowShopItemToolTip(item.data as ItemData_Equippment);
+
+        Debug.Log("Show item info");
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -86,6 +92,8 @@ public class UIItemSlot : MonoBehaviour, IPointerDownHandler,IPointerEnterHandle
         if (item == null) return;
 
         ui.itemToolTip.HideToolTip();
+        ui.shopItemToolTip.HideShopItemToolTip();
+        Debug.Log("Hide item info");
     }
 
    
