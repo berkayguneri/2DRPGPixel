@@ -47,6 +47,14 @@ public class ShurikenSkill : Skill
     }
     #region Unlock skill region
 
+    protected override void CheckUnlock()
+    {
+        UnlockShuriken();
+        UnlockShurikenMirage();
+        UnlockExplosiveShuriken();
+        UnlockMovingShuriken();
+        UnlockMultiStack();
+    }
     private void UnlockShuriken()
     {
         if (unlockShurikenButton.unLocked)
@@ -77,14 +85,7 @@ public class ShurikenSkill : Skill
     }
     #endregion
 
-    protected override void CheckUnlock()
-    {
-        UnlockShuriken();
-        UnlockShurikenMirage();
-        UnlockExplosiveShuriken();
-        UnlockMovingShuriken();
-        UnlockMultiStack();
-    }
+    
 
     public override void UseSkill()
     {

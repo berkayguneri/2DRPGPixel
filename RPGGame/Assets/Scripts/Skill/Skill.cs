@@ -6,7 +6,7 @@ public class Skill : MonoBehaviour
 {
 
     public float coolDown;
-    protected float coolDownTimer;
+    public float coolDownTimer;
     protected Player player;
 
     protected virtual void Start()

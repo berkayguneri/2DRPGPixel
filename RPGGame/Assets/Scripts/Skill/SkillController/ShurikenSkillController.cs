@@ -29,6 +29,7 @@ public class ShurikenSkillController : MonoBehaviour
         closestTarget = _closestTarget;
         player = _player;
     }
+
     private void Update()
     {
         shurikenExistTimer -= Time.deltaTime;
