@@ -15,10 +15,10 @@ public class EnemyBoss : Enemy
 
     [Header("SpellCast Details")]
     [SerializeField] private GameObject spellPrefab;
-    [SerializeField] private float spellStateCooldown;
     public int amountOfSpells;
     public float spellCooldown;
     public float lastTimeCast;
+    [SerializeField] private float spellStateCooldown;
 
 
     [Header("Teleport Details")]
@@ -45,6 +45,11 @@ public class EnemyBoss : Enemy
         stateMachine.Initiliaze(idleState);
     }
 
+    protected override void Update()
+    {
+        base.Update();
+    }
+
     public override void Die()
     {
         base.Die();
@@ -60,7 +65,7 @@ public class EnemyBoss : Enemy
         if (player.rb.velocity.x != 0)
             xOffset = player.facingDir * 3;
 
-        Vector3 spellPosition = new Vector3(player.transform.position.x + xOffset, player.transform.position.y + 1.5f);
+        Vector3 spellPosition = new Vector3(player.transform.position.x + xOffset, player.transform.position.y + 3f);
 
 
         GameObject newSpell = Instantiate(spellPrefab, spellPosition, Quaternion.identity);

@@ -41,6 +41,7 @@ public class BossSpellCastState : EnemyState
     {
         if (amountOfSpells > 0 && spellTimer < 0)
         {
+            amountOfSpells--;
             spellTimer = enemy.spellCooldown;
             return true;
         }

@@ -36,7 +36,7 @@ public class ArcherBattleState : EnemyState
     {
         base.Update();
 
-        enemy.anim.SetFloat("yVelocity", enemy.rb.velocity.x);
+        //enemy.anim.SetFloat("yVelocity", enemy.rb.velocity.x);
 
         if (enemy.IsPlayerDetected())
         {
@@ -66,10 +66,10 @@ public class ArcherBattleState : EnemyState
                 stateMachine.ChangeState(enemy.idleState);
         }
 
-        float distanceToPlayerX = Mathf.Abs(player.position.x - enemy.transform.position.x);
+        //float distanceToPlayerX = Mathf.Abs(player.position.x - enemy.transform.position.x);
 
-        if (distanceToPlayerX < 1f)
-            return;
+        //if (distanceToPlayerX < 1f)
+        //    return;
 
         BattleStateFlipControl();
 
@@ -99,7 +99,7 @@ public class ArcherBattleState : EnemyState
 
     private bool CanJump()
     {
-        if (enemy.GroundBehindCheck() == false || enemy.WallBehind())
+        if (enemy.GroundBehindCheck() == false || enemy.WallBehind()==true)
             return false;
 
         if (Time.time >= enemy.lastTimeJumped + enemy.jumpCooldown)

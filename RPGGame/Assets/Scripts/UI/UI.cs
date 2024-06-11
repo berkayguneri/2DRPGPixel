@@ -17,6 +17,7 @@ public class UI : MonoBehaviour,ISaveManager
     [SerializeField] private GameObject craftUI;
     [SerializeField] private GameObject optionsUI;
     [SerializeField] private GameObject inGameUI;
+    [SerializeField] private GameObject howToPlayUI;
 
     public UISkillToolTip skillToolTip;
     public UIItemToolTip itemToolTip;
@@ -53,6 +54,9 @@ public class UI : MonoBehaviour,ISaveManager
          
         if(Input.GetKeyDown(KeyCode.O))
             SwitchWithKeyTo(optionsUI);
+
+        if (Input.GetKeyDown(KeyCode.Z))
+            SwitchWithKeyTo(howToPlayUI);
             
     }
     public void SwitchTo(GameObject _menu)

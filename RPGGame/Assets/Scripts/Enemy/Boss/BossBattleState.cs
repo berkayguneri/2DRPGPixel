@@ -23,14 +23,10 @@ public class BossBattleState : EnemyState
         //if (player.GetComponent<PlayerStats>().isDead)
         //    stateMachine.ChangeState(enemy.moveState);
 
-        stateTimer = enemy.battleTime;
-        //flippedOnce = false;
+        //stateTimer = enemy.battleTime;
     }
 
-    public override void Exit()
-    {
-        base.Exit();
-    }
+    
 
     public override void Update()
     {
@@ -47,14 +43,6 @@ public class BossBattleState : EnemyState
                     stateMachine.ChangeState(enemy.idleState);
             }
         }
-        //else
-        //{
-        //    if (flippedOnce == false)
-        //    {
-        //        flippedOnce = true;
-        //        enemy.Flip();
-        //    }
-        //}
 
         float distanceToPlayerX = Mathf.Abs(player.position.x - enemy.transform.position.x);
 
@@ -72,6 +60,11 @@ public class BossBattleState : EnemyState
 
 
         enemy.SetVelocity(enemy.moveSpeed * moveDirection, rb.velocity.y);
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
     }
     private bool CanAttack()
     {
